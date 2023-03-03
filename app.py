@@ -70,9 +70,8 @@ st.write('passenger_count:', passenger_count)
 Dictionary = {"key": '0', "pickup_datetime": date, "pickup_longitude": pickup_longitude, "pickup_latitude": pickup_latitude, "dropoff_longitude": dropoff_longitude, "dropoff_latitude": dropoff_latitude, "passenger_count": passenger_count}
 
 result = requests.get(url, params=Dictionary).json()
-
-
-st.write(result)
+for v in result.values():
+    st.write(v)
 
 
 token = open(".mapbox_token").read()
