@@ -1,6 +1,8 @@
 import streamlit as st
 import requests
 import datetime
+import plotly.express as px
+import plotly.graph_objects as go
 
 '''
 # TaxiFareModel
@@ -72,3 +74,27 @@ result = requests.get(url, params=Dictionary).json()
 
 
 st.write(result)
+
+
+token = open(".mapbox_token").read()
+
+
+fig = px.scatter_mapbox(
+    lon = [float(pickup_longitude), float(dropoff_longitude)], lat = [float(pickup_latitude), float(dropoff_latitude)],
+    text = ["Start", "Stop"],
+    zoom=11,
+    center={'lon':float(pickup_longitude),'lat':float(pickup_latitude)})
+
+fig.add_trace(
+    go.Scattermapbox(
+        lat=[float(pickup_latitude), float(dropoff_latitude)],
+        lon=[float(pickup_longitude), float(dropoff_longitude)],
+        mode='lines',
+        line=dict(width=2, color='blue')
+    )
+)
+
+fig.update_layout(mapbox_style="carto-positron")
+
+with st.container():
+    st.plotly_chart(fig)
